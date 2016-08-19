@@ -1,0 +1,7 @@
+G:\CSE Programming\Study\4year-1term\Thesis\Thesis Code\Thesis Code\CRO for MSA\PairwiseAlignmentUsingCRO\PairwiseAlignmentUsingCRO\bin\Debug\PairwiseAlignmentUsingCRO.exe.config
+G:\CSE Programming\Study\4year-2term\Thesis\Thesis Code\Thesis Code\CRO for MSA\PairwiseAlignmentUsingCRO\PairwiseAlignmentUsingCRO\bin\Debug\PairwiseAlignmentUsingCRO.exe.config
+G:\CSE Programming\Study\4year-2term\Thesis\Thesis Code\Thesis Code\CRO for MSA\PairwiseAlignmentUsingCRO\PairwiseAlignmentUsingCRO\bin\Debug\PairwiseAlignmentUsingCRO.exe
+G:\CSE Programming\Study\4year-2term\Thesis\Thesis Code\Thesis Code\CRO for MSA\PairwiseAlignmentUsingCRO\PairwiseAlignmentUsingCRO\bin\Debug\PairwiseAlignmentUsingCRO.pdb
+G:\CSE Programming\Study\4year-2term\Thesis\Thesis Code\Thesis Code\CRO for MSA\PairwiseAlignmentUsingCRO\PairwiseAlignmentUsingCRO\obj\Debug\PairwiseAlignmentUsingCRO.csprojResolveAssemblyReference.cache
+G:\CSE Programming\Study\4year-2term\Thesis\Thesis Code\Thesis Code\CRO for MSA\PairwiseAlignmentUsingCRO\PairwiseAlignmentUsingCRO\obj\Debug\PairwiseAlignmentUsingCRO.exe
+G:\CSE Programming\Study\4year-2term\Thesis\Thesis Code\Thesis Code\CRO for MSA\PairwiseAlignmentUsingCRO\PairwiseAlignmentUsingCRO\obj\Debug\PairwiseAlignmentUsingCRO.pdb
