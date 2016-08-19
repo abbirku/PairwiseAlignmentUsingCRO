@@ -18,6 +18,9 @@ namespace PairwiseAlignmentUsingCRO
         Random rand;
         MoleculeRepresentation globalMol;
         int numOfIteration;
+        int globalMinPE;
+        int minPE;
+        int num_of_iter;
         MultipleSequenceInformation msi;
 
 
@@ -40,6 +43,9 @@ namespace PairwiseAlignmentUsingCRO
             this.buffer = buffer;
             this.globalMol = new MoleculeRepresentation(m);
             this.numOfIteration = numOfIteration;
+            this.globalMinPE = 99999999;
+            this.minPE = 99999999;
+            this.num_of_iter = 0;
             this.msi = m;
 
 
@@ -60,6 +66,10 @@ namespace PairwiseAlignmentUsingCRO
         public List<MoleculeRepresentation> getPopulation()
         {
             return population;
+        }
+
+        public int getNumOfIteration() {
+            return this.num_of_iter;
         }
 
         void onWallIneffectiveCollision(MoleculeRepresentation selMol)
@@ -88,6 +98,8 @@ namespace PairwiseAlignmentUsingCRO
                     selMol.setMoleculeMinStructure(selMol.getMoleculeMatrix());
                     selMol.setMinPE(selMol.getMolPE());
                     selMol.setMinHit(selMol.getNumHit());
+                    //added
+                    this.minPE = selMol.getMinPE();
                 }
             }
         }
@@ -142,6 +154,17 @@ namespace PairwiseAlignmentUsingCRO
                 population.Add(chanMols[0]);
                 population.Add(chanMols[1]);
 
+                //added
+                if (minPE > chanMols[0].getMinPE())
+                {
+                    minPE = chanMols[0].getMinPE();
+                }
+
+                if (minPE > chanMols[1].getMinPE())
+                {
+                    minPE = chanMols[1].getMinPE();
+                }
+
             }
             else
             {
@@ -174,9 +197,20 @@ namespace PairwiseAlignmentUsingCRO
                     }*/
 
                     population.RemoveAt(molIndex);
-                    
+
                     population.Add(chanMols[0]);
                     population.Add(chanMols[1]);
+
+                    //added
+                    if (minPE > chanMols[0].getMinPE())
+                    {
+                        minPE = chanMols[0].getMinPE();
+                    }
+
+                    if (minPE > chanMols[1].getMinPE())
+                    {
+                        minPE = chanMols[1].getMinPE();
+                    }
 
 
                 }
@@ -241,12 +275,16 @@ namespace PairwiseAlignmentUsingCRO
                     selMol1.setMoleculeMinStructure(selMol1.getMoleculeMatrix());
                     selMol1.setMinPE(selMol1.getMolPE());
                     selMol1.setMinHit(selMol1.getNumHit());
+                    //added
+                    this.minPE = selMol1.getMinPE();
                 }
                 if (selMol2.getMolPE() < selMol2.getMinPE())
                 {
                     selMol2.setMoleculeMinStructure(selMol2.getMoleculeMatrix());
                     selMol2.setMinPE(selMol2.getMolPE());
                     selMol2.setMinHit(selMol2.getNumHit());
+                    //added
+                    this.minPE = selMol2.getMinPE();
                 }
             }
         }
@@ -280,9 +318,10 @@ namespace PairwiseAlignmentUsingCRO
                 int id1 = selMol1.id;
                 int id2 = selMol2.id;
 
-                for (int i = 0; i<population.Count;i++ )
+                for (int i = 0; i < population.Count; i++)
                 {
-                    if(population[i].id==id1){
+                    if (population[i].id == id1)
+                    {
                         population.RemoveAt(i);
                         break;
                     }
@@ -302,6 +341,11 @@ namespace PairwiseAlignmentUsingCRO
                 population.RemoveAll(x => remItem.Contains(x));*/
 
                 population.Add(synMol);
+
+                if (minPE > synMol.getMinPE())
+                {
+                    minPE = synMol.getMinPE();
+                }
             }
             else
             {
@@ -323,6 +367,7 @@ namespace PairwiseAlignmentUsingCRO
             int molIndex;
             int anotherMolIndex;
             int numOfHit, minNumHit;
+            int stop_criteria = 0;
 
             PopulationInitialization popInit = new PopulationInitialization(rand, msi, popSize);
             popInit.createSolutions(initialKE);
@@ -339,12 +384,12 @@ namespace PairwiseAlignmentUsingCRO
                     molIndex = randMole();
                     numOfHit = population[molIndex].getNumHit();
                     minNumHit = population[molIndex].getMinHit();
-                    if ((numOfHit - minNumHit) > decomThresh)
+                    if ((numOfHit - minNumHit) > decomThresh)//decomposition
                     {
                         decompositionWork(population[molIndex], molIndex, population);
                         iter += 2;
                     }
-                    else
+                    else//on wall
                     {
                         onWallIneffectiveCollision(population[molIndex]);
                         iter += 1;
@@ -359,11 +404,13 @@ namespace PairwiseAlignmentUsingCRO
                         anotherMolIndex = randMole();
                     }
 
+                    //synthesis
                     if ((population[molIndex].getMolKE() <= synThresh) && (population[anotherMolIndex].getMolKE() <= synThresh))
                     {
                         synthesisWork(population[molIndex], population[anotherMolIndex], molIndex, anotherMolIndex, population);
                         iter += 2;
                     }
+                    //inter nolecular ineffective collision
                     else
                     {
                         interMolecularIneffectiveCollision(population[molIndex], population[anotherMolIndex]);
@@ -376,6 +423,24 @@ namespace PairwiseAlignmentUsingCRO
                     i = 0;
                 }
                 i++;
+
+                if (minPE != globalMinPE)
+                {
+                    if((minPE < globalMinPE)){
+                        globalMinPE = minPE;
+                    }
+                    stop_criteria = 0;
+                }
+                else
+                {
+                    stop_criteria += 1;
+                }
+
+                if(stop_criteria==50){
+                    break;
+                }
+                this.num_of_iter += 1;
+
             }
 
             watch.Stop();

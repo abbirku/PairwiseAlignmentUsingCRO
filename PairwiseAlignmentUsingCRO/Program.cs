@@ -18,10 +18,10 @@ namespace PairwiseAlignmentUsingCRO
                 int popSize = 1000;
                 double InitialKE = 1000.0;//KE data type changed
                 double KElossRate = 0.2;
-                double MoleColl = 0.0001;
+                double MoleColl = 0.01;
                 int decomThresh = 500;
                 int synThresh = 5;
-                int buffer = 100;
+                int buffer = 1000;
                 int numOfIteration = 999999;
                 string lines;
 
@@ -64,7 +64,9 @@ namespace PairwiseAlignmentUsingCRO
                     MoleculeRepresentation temp = null;
                     int minPE = population[0].getMinPE();
                     temp = population[0];
-                    Console.WriteLine("Popsize = " + population.Count);
+                    lines = "Popsize = " + population.Count;
+                    file.WriteLine(lines);
+                    
 
                     for (int i = 1; i < population.Count; i++)
                     {
@@ -80,7 +82,8 @@ namespace PairwiseAlignmentUsingCRO
                     Console.WriteLine("Alignment score = -" + ft.alignmentScore(ftArr, temp.getNumOfSequences(), temp.getNumOfColumns()));
                     string str = "Alignment score = -" + ft.alignmentScore(ftArr, temp.getNumOfSequences(), temp.getNumOfColumns());
                     file.WriteLine(str);
-
+                    str = "Number of iteration = " + croAlgo.getNumOfIteration();
+                    file.WriteLine(str);
 
 
                     if (temp != null)
